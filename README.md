@@ -1,0 +1,1 @@
+# contao-alt-editor-bundle
