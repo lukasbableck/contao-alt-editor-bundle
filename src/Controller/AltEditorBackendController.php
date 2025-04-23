@@ -38,6 +38,9 @@ class AltEditorBackendController extends AbstractBackendController {
 		$imageExtensions = System::getContainer()->getParameter('contao.image.valid_extensions');
 
 		foreach ($files as $file) {
+			if (!file_exists($file->getAbsolutePath())) {
+				continue;
+			}
 			$path = $file->path;
 			$extension = strtolower(pathinfo($path, \PATHINFO_EXTENSION));
 
@@ -64,6 +67,10 @@ class AltEditorBackendController extends AbstractBackendController {
 			}
 
 			$meta = StringUtil::deserialize($file->meta, true);
+			if (empty($meta)) {
+				$arrFiles[] = $file;
+				continue;
+			}
 			foreach ($meta as $language => $values) {
 				if (($values['alt'] ?? '') == '') {
 					$arrFiles[] = $file;
