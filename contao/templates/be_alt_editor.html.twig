@@ -1,0 +1,66 @@
+{% extends '@Contao/be_main' %}
+
+{% block main_content %}
+	<div class="tl_listing_container">
+		<h2>{{ 'alt_editor.imgWithNoAltTexts'|trans({}, 'contao_alt_editor') }}</h2>
+		{% if imagesWithoutAlt is empty %}
+			<p style="margin-top: 15px; color: var(--green)">{{ 'alt_editor.noImagesWithoutAlt'|trans({}, 'contao_alt_editor') }}</p>
+		{% else %}
+			<table class="tl_listing showColumns" style="margin-top: 15px;">
+				<thead>
+					<tr>
+						<th class="tl_folder_tlist"></th>
+						<th class="tl_folder_tlist">{{ 'tl_files.path.0'|trans({}, 'contao_tl_files') }}</th>
+						<th class="tl_folder_tlist"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for image in imagesWithoutAlt %}
+						<tr>
+							<td class="tl_file_list" style="background: var(--error-bg);">
+								{{ contao_figure(image.path, [200, 200, 'proportional']) }}
+							</td>
+							<td class="tl_file_list" style="background: var(--error-bg);">
+								{{ image.path }}
+							</td>
+							<td class="tl_file_list" style="background: var(--error-bg);">
+								<a href="{{ path('contao_backend') }}?do=files&amp;act=edit&amp;id={{ image.path }}" title="{{ 'tl_files.editFile'|trans([image.path], 'contao_tl_files') }}">
+									<img src="/system/themes/flexible/icons/edit.svg" alt>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+		{% if ignoredImages is not empty %}
+			<h2 style="margin-block-start: 30px;">{{ 'alt_editor.ignoredImages'|trans({}, 'contao_alt_editor') }}</h2>
+			<table class="tl_listing showColumns" style="margin-top: 15px;">
+				<thead>
+					<tr>
+						<th class="tl_folder_tlist"></th>
+						<th class="tl_folder_tlist">{{ 'tl_files.path.0'|trans({}, 'contao_tl_files') }}</th>
+						<th class="tl_folder_tlist"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for image in ignoredImages %}
+						<tr>
+							<td class="tl_file_list">
+								{{ contao_figure(image.path, [200, 200, 'proportional']) }}
+							</td>
+							<td class="tl_file_list">
+								{{ image.path }}
+							</td>
+							<td class="tl_file_list">
+								<a href="{{ path('contao_backend') }}?do=files&amp;act=edit&amp;id={{ image.path }}" title="{{ 'tl_files.editFile'|trans([image.path], 'contao_tl_files') }}">
+									<img src="/system/themes/flexible/icons/edit.svg" alt>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+	</div>
+{% endblock %}

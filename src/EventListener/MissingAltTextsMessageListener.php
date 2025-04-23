@@ -1,0 +1,15 @@
+<?php
+namespace Lukasbableck\ContaoAltEditorBundle\EventListener;
+
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Contao\System;
+use Lukasbableck\ContaoAltEditorBundle\Controller\AltEditorBackendController;
+
+#[AsHook('getSystemMessages')]
+class MissingAltTextsMessageListener {
+	public function __invoke(): string {
+		$link = System::getContainer()->get('router')->generate(AltEditorBackendController::class);
+
+		return '<p class="tl_error">Es befinden sich Bilder ohne Alternativ-Text in der Dateiverwaltung. <a href="'.$link.'">Jetzt beheben.</a></p>';
+	}
+}
