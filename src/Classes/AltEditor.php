@@ -12,6 +12,7 @@ class AltEditor {
 	private array $imageCache = [];
 	private array $imageWithoutAltCache = [];
 	private array $ignoredImageCache = [];
+	private array $rootPageLanguageCache = [];
 
 	public function getImages(): array {
 		if (!empty($this->imageCache)) {
@@ -45,6 +46,24 @@ class AltEditor {
 			return $this->imageWithoutAltCache;
 		}
 
+		$arrFiles = [];
+		foreach ($images as $file) {
+			if ($this->hasAltTexts($file)) {
+				continue;
+			}
+
+			$arrFiles[] = $file;
+		}
+		$this->imageWithoutAltCache = $arrFiles;
+
+		return $arrFiles;
+	}
+
+	private function getRootPageLanguages(): array {
+		if (!empty($this->rootPageLanguageCache)) {
+			return $this->rootPageLanguageCache;
+		}
+
 		$rootPages = PageModel::findPublishedRootPages();
 		$languages = [];
 		if ($rootPages) {
@@ -55,39 +74,42 @@ class AltEditor {
 		$languages = array_unique($languages);
 		sort($languages);
 
-		$arrFiles = [];
-		foreach ($images as $file) {
-			if ($file->ignoreEmptyAlt) {
-				continue;
-			}
+		return $languages;
+	}
 
-			if (!$file->meta) {
-				$arrFiles[] = $file;
-				continue;
-			}
+	public function hasAltTexts(FilesModel $file): bool {
+		if ($file->ignoreEmptyAlt) {
+			return true;
+		}
 
-			$meta = StringUtil::deserialize($file->meta, true);
-			if (empty($meta)) {
-				$arrFiles[] = $file;
-				continue;
-			}
-			$keys = array_keys($meta);
-			sort($keys);
-			if (array_intersect($keys, $languages) !== $languages) {
-				$arrFiles[] = $file;
-				continue;
-			}
+		if (!$file->meta) {
+			$arrFiles[] = $file;
 
-			foreach ($meta as $language => $values) {
-				if (($values['alt'] ?? '') == '') {
-					$arrFiles[] = $file;
-					continue 2;
-				}
+			return false;
+		}
+
+		$meta = StringUtil::deserialize($file->meta, true);
+		if (empty($meta)) {
+			$arrFiles[] = $file;
+
+			return false;
+		}
+		$keys = array_keys($meta);
+		sort($keys);
+
+		$languages = $this->getRootPageLanguages();
+
+		if (array_intersect($keys, $languages) !== $languages) {
+			return false;
+		}
+
+		foreach ($meta as $language => $values) {
+			if (($values['alt'] ?? '') == '') {
+				return false;
 			}
 		}
-		$this->imageWithoutAltCache = $arrFiles;
 
-		return $arrFiles;
+		return true;
 	}
 
 	public function getIgnoredImages(array $images): array {
