@@ -25,7 +25,15 @@
 					{% for image in imagesWithoutAlt %}
 						<tr>
 							<td class="tl_file_list" style="background: var(--error-bg);">
-								{{ contao_figure(image.path, preview_size) }}
+								{% include "@Contao/component/_figure.html.twig" with {
+									figure: figure(image.path, preview_size, {
+										options: {
+											img_attr: {
+												loading: 'lazy'
+											}
+										}
+									})
+								} %}
 							</td>
 							<td class="tl_file_list" style="background: var(--error-bg);">
 								{{ image.path }}
@@ -54,7 +62,15 @@
 					{% for image in ignoredImages %}
 						<tr>
 							<td class="tl_file_list">
-								{{ contao_figure(image.path, preview_size) }}
+								{% include "@Contao/component/_figure.html.twig" with {
+									figure: figure(image.path, preview_size, {
+										options: {
+											img_attr: {
+												loading: 'lazy'
+											}
+										}
+									})
+								} %}
 							</td>
 							<td class="tl_file_list">
 								{{ image.path }}
