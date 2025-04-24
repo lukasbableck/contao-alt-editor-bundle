@@ -2,6 +2,7 @@
 namespace Lukasbableck\ContaoAltEditorBundle\Classes;
 
 use Contao\FilesModel;
+use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 
@@ -42,6 +43,16 @@ class AltEditor {
 			return $this->imageWithoutAltCache;
 		}
 
+		$rootPages = PageModel::findPublishedRootPages();
+		$languages = [];
+		if ($rootPages) {
+			foreach ($rootPages as $page) {
+				$languages[] = $page->language;
+			}
+		}
+		$languages = array_unique($languages);
+		sort($languages);
+
 		$arrFiles = [];
 		foreach ($images as $file) {
 			if ($file->ignoreEmptyAlt) {
@@ -58,6 +69,13 @@ class AltEditor {
 				$arrFiles[] = $file;
 				continue;
 			}
+			$keys = array_keys($meta);
+			sort($keys);
+			if ($keys !== $languages) {
+				$arrFiles[] = $file;
+				continue;
+			}
+
 			foreach ($meta as $language => $values) {
 				if (($values['alt'] ?? '') == '') {
 					$arrFiles[] = $file;
