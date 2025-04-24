@@ -1,7 +1,7 @@
 {
     "name": "lukasbableck/contao-alt-editor-bundle",
     "type": "contao-bundle",
-	"description": "This bundle provides an easy way to see which images do not have an alt attribute and allows you to add them easily.",
+	"description": "This bundle provides an easy way to see which images do not have an alt text and allows you to add them easily.",
 	"keywords": [
 		"images",
 		"alt",
