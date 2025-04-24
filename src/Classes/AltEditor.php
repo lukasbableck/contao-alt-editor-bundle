@@ -5,6 +5,8 @@ use Contao\FilesModel;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class AltEditor {
 	private array $imageCache = [];
@@ -102,5 +104,31 @@ class AltEditor {
 		$this->ignoredImageCache = $arrFiles;
 
 		return $arrFiles;
+	}
+
+	public function areAltTextsMissing(): bool {
+		$cache = new FilesystemAdapter();
+		$cacheKey = 'contao_alt_editor_missing_alt_texts';
+
+		$value = $cache->get($cacheKey, function (ItemInterface $item) {
+			$item->expiresAfter(86400);
+
+			return \count($this->getImagesWithoutAltTexts($this->getImages()));
+		});
+
+		if (0 === $value) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function updateMissingAltTextCount($count): void {
+		$cache = new FilesystemAdapter();
+		$cacheKey = 'contao_alt_editor_missing_alt_texts';
+
+		$cacheItem = $cache->getItem($cacheKey);
+		$cacheItem->set($count);
+		$cache->save($cacheItem);
 	}
 }

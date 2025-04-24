@@ -26,6 +26,8 @@ class AltEditorBackendController extends AbstractBackendController {
 		$allImages = $this->altEditor->getImages();
 		$imagesWithoutAlt = $this->altEditor->getImagesWithoutAltTexts($allImages);
 
+		$this->altEditor->updateMissingAltTextCount(\count($imagesWithoutAlt));
+
 		return $this->render('@Contao/be_alt_editor.html.twig', [
 			'headline' => $this->translator->trans('MOD.alt_editor.0', [], 'contao_modules'),
 			'title' => $this->translator->trans('MOD.alt_editor.0', [], 'contao_modules'),
