@@ -18,7 +18,7 @@ class MissingAltTextsMessageListener {
 		$cacheKey = 'contao_alt_editor_missing_alt_texts';
 
 		$value = $cache->get($cacheKey, function (ItemInterface $item) {
-			$item->expiresAfter(300);
+			$item->expiresAfter(86400);
 
 			return \count($this->altEditor->getImagesWithoutAltTexts($this->altEditor->getImages()));
 		});
