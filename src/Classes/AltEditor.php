@@ -71,7 +71,7 @@ class AltEditor {
 			}
 			$keys = array_keys($meta);
 			sort($keys);
-			if ($keys !== $languages) {
+			if (array_intersect($keys, $languages) !== $languages) {
 				$arrFiles[] = $file;
 				continue;
 			}
