@@ -1,0 +1,66 @@
+{% block list_container %}
+	<div class="tl_listing_inner">
+		<div class="title">
+			<h2>{{ title }}</h2>
+			<div id="tl_buttons">
+				{% if select|default %}
+					<a href="?" class="header_back" accesskey="b" title="{{ 'MSC.backBTTitle'|trans({}, 'contao_default') }}" data-action="contao--scroll-offset#discard" data-contao--tooltips-target="tooltip">{{ 'MSC.backBT'|trans({}, 'contao_default') }}</a>
+				{% else %}
+					<a href="?do=select" class="header_edit_all" data-action="contao--scroll-offset#store" accesskey="e" data-contao--tooltips-target="tooltip" title="{{ 'MSC.all.1'|trans({}, 'contao_default') }}">{{ 'MSC.all.0'|trans({}, 'contao_default') }}</a>
+				{% endif %}
+			</div>
+		</div>
+
+		{% if errorBackground|default %}
+			{% set background = ' style="background-color: var(--error-bg);"' %}
+		{% endif %}
+
+		{% if items is empty %}
+			<p style="margin-top: 15px; color: var(--green)">{{ noItemsText }}</p>
+		{% else %}
+			{% if select|default %}
+				<div class="tl_select_trigger">
+					<label for="tl_select_trigger" class="tl_select_label">{{ 'MSC.selectAll'|trans({}, 'contao_default') }}</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
+				</div>
+			{% endif %}
+			<table class="tl_listing showColumns">
+				<thead>
+					<tr>
+						<th class="tl_folder_tlist"></th>
+						<th class="tl_folder_tlist">{{ 'tl_files.path.0'|trans({}, 'contao_tl_files') }}</th>
+						<th class="tl_folder_tlist"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in items %}
+						<tr>
+							<td class="tl_file_list"{{ background|default|raw }}>
+								{{ include('@Contao/component/_figure.html.twig', {
+									figure: figure(item.path, preview_size, {
+										options: {
+											img_attr: {
+												loading: 'lazy',
+											},
+										},
+									}),
+								}) }}
+							</td>
+							<td class="tl_file_list"{{ background|default|raw }}>
+								{{ item.path }}
+							</td>
+							<td class="tl_file_list"{{ background|default|raw }}>
+								{% if select|default %}
+									<input type="checkbox" name="IDS[]" id="ids_{{ item.uuid }}" class="tl_tree_checkbox" value="{{ item.path }}">
+								{% else %}
+									<a href="{{ path('contao_backend') }}?do=files&act=edit&id={{ item.path }}" title="{{ 'tl_files.editFile'|trans([item.path], 'contao_tl_files') }}">
+										<img src="/system/themes/flexible/icons/edit.svg" alt>
+									</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+	</div>
+{% endblock %}

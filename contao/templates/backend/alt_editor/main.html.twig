@@ -1,0 +1,50 @@
+{% extends '@Contao/be_main' %}
+
+{% set preview_size = picture_config({
+	width: 100,
+	height: 100,
+	resizeMode: 'proportional',
+	sizes: '1,1.5,2',
+}) %}
+
+{% block main_content %}
+	{% if select|default %}
+		<form method="POST" action="{{ path('contao_backend') }}?do=files&act=editAll&fields=1&rt={{ csrfToken }}">
+			<input type="hidden" name="FORM_SUBMIT" value="tl_files_all">
+			<input type="hidden" name="REQUEST_TOKEN" value="{{ csrfToken }}">
+			<input type="hidden" name="all_fields[]" value="name">
+			<input type="hidden" name="all_fields[]" value="meta">
+			<input type="hidden" name="all_fields[]" value="ignoreEmptyAlt">
+	{% endif %}
+		<div class="tl_listing_container">
+			{{ include('@Contao/backend/alt_editor/image_list.html.twig', {
+				title: 'alt_editor.imgWithNoAltTexts'|trans({}, 'contao_alt_editor'),
+				items: imagesWithoutAlt,
+				preview_size: preview_size,
+				noItemsText: 'alt_editor.noImagesWithoutAlt'|trans({}, 'contao_alt_editor'),
+				errorBackground: true,
+			}) }}
+
+			{% if ignoredImages is not empty %}
+				{{ include('@Contao/backend/alt_editor/image_list.html.twig', {
+					title: 'alt_editor.ignoredImages'|trans({}, 'contao_alt_editor'),
+					items: ignoredImages,
+					preview_size: preview_size,
+					noItemsText: '',
+				}) }}
+			{% endif %}
+		</div>
+	{% if select|default %}
+			<div class="tl_formbody_submit" style="text-align:right">
+				<div class="tl_submit_container">
+					<button type="submit" name="save" id="edit" class="tl_submit" accesskey="s">{{ 'MSC.editSelected'|trans({}, 'contao_default') }}</button>
+				</div>
+			</div>
+		</form>
+	{% endif %}
+{% endblock %}
+
+{% block head %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('bundles/contaoalteditor/backend.css') }}">
+{% endblock %}

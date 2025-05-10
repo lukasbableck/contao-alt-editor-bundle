@@ -15,8 +15,7 @@ $GLOBALS['TL_DCA']['tl_files']['list']['global_operations']['altEditor'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_files']['fields']['ignoreEmptyAlt'] = [
-	'exclude' => true,
 	'inputType' => 'checkbox',
-	'eval' => ['tl_class' => 'w50'],
+	'eval' => ['tl_class' => 'w50 clr'],
 	'sql' => "char(1) NOT NULL default ''",
 ];

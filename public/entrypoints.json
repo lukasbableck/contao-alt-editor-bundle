@@ -1,0 +1,12 @@
+{
+  "entrypoints": {
+    "backend": {
+      "css": [
+        "/bundles/contaoalteditor/backend.abe49d8f.css"
+      ],
+      "js": [
+        "/bundles/contaoalteditor/backend.31d6cfe0.js"
+      ]
+    }
+  }
+}
