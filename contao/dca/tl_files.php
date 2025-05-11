@@ -1,5 +1,6 @@
 <?php
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Lukasbableck\ContaoAltEditorBundle\Controller\AltEditorBackendController;
 
 $GLOBALS['TL_DCA']['tl_files']['list']['operations'] = array_merge(
@@ -19,3 +20,8 @@ $GLOBALS['TL_DCA']['tl_files']['fields']['ignoreEmptyAlt'] = [
 	'eval' => ['tl_class' => 'w50 clr'],
 	'sql' => "char(1) NOT NULL default ''",
 ];
+
+PaletteManipulator::create()
+	->addField('ignoreEmptyAlt', 'meta_legend', PaletteManipulator::POSITION_APPEND)
+	->applyToPalette('default', 'tl_files')
+;
