@@ -6,6 +6,7 @@ use Contao\DataContainer;
 use Contao\FilesModel;
 use Contao\Image;
 use Contao\StringUtil;
+use Contao\System;
 use Lukasbableck\ContaoAltEditorBundle\Classes\AltEditor;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -18,6 +19,12 @@ class AltTextButtonCallbackListener {
 		$file = FilesModel::findByPath(urldecode((string) $row['id']));
 
 		if (null === $file || 'file' !== $file->type) {
+			return '';
+		}
+
+		$extension = strtolower(pathinfo($file->path, \PATHINFO_EXTENSION));
+		$imageExtensions = System::getContainer()->getParameter('contao.image.valid_extensions');
+		if (!\in_array($extension, $imageExtensions)) {
 			return '';
 		}
 
