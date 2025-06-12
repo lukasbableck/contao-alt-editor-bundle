@@ -11,10 +11,6 @@
 			</div>
 		</div>
 
-		{% if errorBackground|default %}
-			{% set background = ' style="background-color: var(--error-bg);"' %}
-		{% endif %}
-
 		{% if items is empty %}
 			<p style="margin-top: 15px; color: var(--green)">{{ noItemsText }}</p>
 		{% else %}
@@ -34,6 +30,13 @@
 				<tbody>
 					{% for item in items %}
 						<tr>
+							{% if errorBackground|default %}
+								{% if item.inUse is not defined or item.inUse|default %}
+									{% set background = ' style="background-color: var(--error-bg);"' %}
+								{% else %}
+									{% set background = ' style="background-color: var(--new-bg);"' %}
+								{% endif %}
+							{% endif %}
 							<td class="tl_file_list"{{ background|default|raw }}>
 								{{ include('@Contao/component/_figure.html.twig', {
 									figure: figure(item.path, preview_size, {
@@ -52,6 +55,17 @@
 								{% if select|default %}
 									<input type="checkbox" name="IDS[]" id="ids_{{ item.uuid }}" class="tl_tree_checkbox" value="{{ item.path }}">
 								{% else %}
+									{% if item.usageHit is defined %}
+										{% if item.usageHit %}
+											{% if item.inUse|default %}
+												<a href="{{ item.usageLink|default }}" title="{{ 'button_show_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
+											{% else %}
+												<a href="{{ item.usageLink|default }}" title="{{ 'button_no_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
+											{% endif %}
+										{% else %}
+											<a href="{{ item.usageLink|default }}" title="{{ 'button_search_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
+										{% endif %}
+									{% endif %}
 									<a href="{{ path('contao_backend') }}?do=files&act=edit&id={{ item.path }}" title="{{ 'tl_files.editFile'|trans([item.path], 'contao_tl_files') }}">
 										<img src="/system/themes/flexible/icons/edit.svg" alt>
 									</a>
