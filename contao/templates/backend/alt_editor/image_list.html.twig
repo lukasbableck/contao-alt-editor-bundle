@@ -1,7 +1,18 @@
 {% block list_container %}
 	<div class="tl_listing_inner">
 		<div class="title">
-			<h2>{{ title }}</h2>
+			<h2>
+				{{ title }}
+				{% if items|filter(v => v.inUse is defined)|length > 0 %}
+					<span class="tl_gray">
+						({{ 'alt_editor.fileCountWithUsage'|trans({}, 'contao_alt_editor')|replace({'{count}': items|length, '{used}': items|filter(v => v.inUse is defined and v.inUse|default)|length}) }})
+					</span>
+				{% else %}
+					<span class="tl_gray">
+						({{ 'alt_editor.fileCount'|trans([], 'contao_alt_editor')|replace({'{count}': items|length}) }})
+					</span>
+				{% endif %}
+			</h2>
 			<div id="tl_buttons">
 				{% if select|default %}
 					<a href="?" class="header_back" accesskey="b" title="{{ 'MSC.backBTTitle'|trans({}, 'contao_default') }}" data-action="contao--scroll-offset#discard" data-contao--tooltips-target="tooltip">{{ 'MSC.backBT'|trans({}, 'contao_default') }}</a>
