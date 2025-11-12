@@ -94,6 +94,7 @@ class AltEditor {
 		}
 		$languages = array_unique($languages);
 		sort($languages);
+		$this->rootPageLanguageCache = $languages;
 
 		return $languages;
 	}
