@@ -9,3 +9,5 @@ $GLOBALS['TL_LANG']['alt_editor']['missingAltText'] = 'Fehlender Alternativtext 
 
 $GLOBALS['TL_LANG']['alt_editor']['fileCount'] = '{count} Dateien';
 $GLOBALS['TL_LANG']['alt_editor']['fileCountWithUsage'] = '{count} Dateien, davon {used} in Verwendung';
+
+$GLOBALS['TL_LANG']['alt_editor']['generateAltText'] = 'Alternativtext für {filename} generieren';

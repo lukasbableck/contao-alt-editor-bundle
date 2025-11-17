@@ -63,24 +63,31 @@
 								{{ item.path }}
 							</td>
 							<td class="tl_file_list"{{ background|default|raw }}>
-								{% if select|default %}
-									<input type="checkbox" name="IDS[]" id="ids_{{ item.uuid }}" class="tl_tree_checkbox" value="{{ item.path }}">
-								{% else %}
-									{% if item.usageHit is defined %}
-										{% if item.usageHit %}
-											{% if item.inUse|default %}
-												<a href="{{ item.usageLink|default }}" title="{{ 'button_show_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
+								<div class="operations">
+									{% if select|default %}
+										<input type="checkbox" name="IDS[]" id="ids_{{ item.uuid }}" class="tl_tree_checkbox" value="{{ item.path }}">
+									{% else %}
+										{% if item.usageHit is defined %}
+											{% if item.usageHit %}
+												{% if item.inUse|default %}
+													<a href="{{ item.usageLink|default }}" title="{{ 'button_show_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
+												{% else %}
+													<a href="{{ item.usageLink|default }}" title="{{ 'button_no_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
+												{% endif %}
 											{% else %}
-												<a href="{{ item.usageLink|default }}" title="{{ 'button_no_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
+												<a href="{{ item.usageLink|default }}" title="{{ 'button_search_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
 											{% endif %}
-										{% else %}
-											<a href="{{ item.usageLink|default }}" title="{{ 'button_search_file_usage'|trans({'%filename%': item.path}, 'ContaoFileUsage') }}">{{ item.usageImage|default|raw }}</a>
 										{% endif %}
+										{% if bilderAltInstalled|default %}
+											<a href="#" onclick="generateImageTag(event, this)" class="bilder-alt-button" data-file-path="{{ item.path|url_encode }}" title="{{ 'alt_editor.generateAltText'|trans({'%filename%': item.path}, 'contao_alt_editor') }}">
+												<img src="/bundles/bilderalt/icons/ai-no-alt.svg" alt height="16" width="16">
+											</a>
+										{% endif %}
+										<a href="{{ path('contao_backend') }}?do=files&act=edit&id={{ item.path }}" title="{{ 'tl_files.editFile'|trans([item.path], 'contao_tl_files') }}">
+											<img src="/system/themes/flexible/icons/edit.svg" alt>
+										</a>
 									{% endif %}
-									<a href="{{ path('contao_backend') }}?do=files&act=edit&id={{ item.path }}" title="{{ 'tl_files.editFile'|trans([item.path], 'contao_tl_files') }}">
-										<img src="/system/themes/flexible/icons/edit.svg" alt>
-									</a>
-								{% endif %}
+								</div>
 							</td>
 						</tr>
 					{% endfor %}

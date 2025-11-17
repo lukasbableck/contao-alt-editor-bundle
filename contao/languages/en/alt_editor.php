@@ -9,3 +9,5 @@ $GLOBALS['TL_LANG']['alt_editor']['missingAltText'] = 'Missing alt text in one o
 
 $GLOBALS['TL_LANG']['alt_editor']['fileCount'] = '{count} files';
 $GLOBALS['TL_LANG']['alt_editor']['fileCountWithUsage'] = '{count} files, {used} of which in use';
+
+$GLOBALS['TL_LANG']['alt_editor']['generateAltText'] = 'Generate alt text for {filename}';

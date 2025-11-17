@@ -43,7 +43,8 @@
         "vincentlanglet/twig-cs-fixer": "^3.5"
 	},
 	"suggest": {
-		"inspiredminds/contao-file-usage": "^3.2"
+		"bluebranch/bilder-alt": "Generate alt texts for images using AI.",
+		"inspiredminds/contao-file-usage": "Displays whether files are in use or not."
 	},
     "autoload": {
         "psr-4": {
