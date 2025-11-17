@@ -1,6 +1,7 @@
 <?php
 namespace Lukasbableck\ContaoAltEditorBundle\Controller;
 
+use Composer\InstalledVersions;
 use Contao\CoreBundle\Controller\AbstractBackendController;
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\Exception\AccessDeniedException;
@@ -39,6 +40,7 @@ class AltEditorBackendController extends AbstractBackendController {
 			'imagesWithoutAlt' => $imagesWithoutAlt,
 			'ignoredImages' => $this->altEditor->getIgnoredImages($allImages),
 			'select' => 'select' == Input::get('do'),
+			'bilderAltInstalled' => InstalledVersions::isInstalled('bluebranch/bilder-alt'),
 			'csrfToken' => $this->csrfTokenManager->getDefaultTokenValue(),
 		]);
 	}
