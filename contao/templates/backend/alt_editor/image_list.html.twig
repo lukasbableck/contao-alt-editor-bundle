@@ -79,7 +79,7 @@
 											{% endif %}
 										{% endif %}
 										{% if bilderAltInstalled|default %}
-											<a href="#" class="bilder_alt_button" onclick="generateImageTag(event, this)" class="bilder-alt-button" data-file-path="{{ item.path|url_encode }}" title="{{ 'alt_editor.generateAltText'|trans({'%filename%': item.path}, 'contao_alt_editor') }}">
+											<a href="#" class="bilder_alt_button" onclick="generateImageTag(event, this)" class="bilder-alt-button" data-file-path="{{ item.path|url_encode }}" title="{{ 'alt_editor.generateAltText'||replace({'{filename}': item.path}, 'contao_alt_editor') }}">
 												<img src="/bundles/bilderalt/icons/ai-no-alt.svg" alt height="16" width="16">
 											</a>
 										{% endif %}
