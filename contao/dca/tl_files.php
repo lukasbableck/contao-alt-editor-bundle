@@ -5,7 +5,9 @@ use Lukasbableck\ContaoAltEditorBundle\Controller\AltEditorBackendController;
 
 $GLOBALS['TL_DCA']['tl_files']['list']['operations'] = array_merge(
 	[
-		'altText' => [],
+		'altText' => [
+			'primary' => true,
+		],
 	],
 	$GLOBALS['TL_DCA']['tl_files']['list']['operations']
 );
