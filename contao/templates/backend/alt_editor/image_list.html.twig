@@ -49,15 +49,18 @@
 								{% endif %}
 							{% endif %}
 							<td class="tl_file_list"{{ background|default|raw }}>
-								{{ include('@Contao/component/_figure.html.twig', {
-									figure: figure(item.path, preview_size, {
+								{% set figure = figure(item.path, preview_size, {
 										options: {
 											img_attr: {
 												loading: 'lazy',
 											},
 										},
-									}),
-								}) }}
+									}) %}
+								{% if figure %}
+									{{ include('@Contao/component/_figure.html.twig', {
+										figure: figure,
+									}) }}
+								{% endif %}
 							</td>
 							<td class="tl_file_list"{{ background|default|raw }}>
 								{{ item.path }}
