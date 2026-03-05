@@ -9,7 +9,7 @@ use Contao\StringUtil;
 use Contao\System;
 use InspiredMinds\ContaoFileUsage\Controller\ShowFileReferencesController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -20,15 +20,14 @@ class AltEditor {
 	private array $rootPageLanguageCache = [];
 
 	private ?FilesystemAdapter $fileUsageCache = null;
-	private string $ref = '';
 
 	public function __construct(
-		private readonly RequestStack $requestStack,
-		private readonly UrlGeneratorInterface $router
+		private readonly UrlGeneratorInterface $router,
+		#[Autowire('%contao.image.valid_extensions%')]
+		private readonly array $imageExtensions,
 	) {
 		if (InstalledVersions::isInstalled('inspiredminds/contao-file-usage')) {
 			$this->fileUsageCache = new FilesystemAdapter('fileusage', 0, System::getContainer()->getParameter('contao_file_usage.file_usage_cache_dir'));
-			$this->ref = $this->requestStack->getCurrentRequest()->attributes->get('_contao_referer_id');
 		}
 	}
 
@@ -39,7 +38,6 @@ class AltEditor {
 
 		$files = FilesModel::findBy(['type=?'], ['file']);
 		$arrFiles = [];
-		$imageExtensions = System::getContainer()->getParameter('contao.image.valid_extensions');
 
 		foreach ($files as $file) {
 			if (!file_exists($file->getAbsolutePath())) {
@@ -48,7 +46,7 @@ class AltEditor {
 			$path = $file->path;
 			$extension = strtolower(pathinfo($path, \PATHINFO_EXTENSION));
 
-			if (!\in_array($extension, $imageExtensions)) {
+			if (!\in_array($extension, $this->imageExtensions)) {
 				continue;
 			}
 
@@ -182,7 +180,7 @@ class AltEditor {
 	private function handleFileUsage(&$file): void {
 		$file = $file->cloneDetached();
 
-		$file->usageLink = $this->router->generate(ShowFileReferencesController::class, ['uuid' => StringUtil::binToUuid($file->uuid), 'ref' => $this->ref]);
+		$file->usageLink = $this->router->generate(ShowFileReferencesController::class, ['uuid' => StringUtil::binToUuid($file->uuid)]);
 		$file->usageImage = Image::getHtml('bundles/contaofileusage/link-off.svg');
 		$uuid = StringUtil::binToUuid($file->uuid);
 
