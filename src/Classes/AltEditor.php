@@ -168,7 +168,7 @@ class AltEditor {
 		return true;
 	}
 
-	public function updateMissingAltTextCount($count): void {
+	public function updateMissingAltTextCount(int $count): void {
 		$cache = new FilesystemAdapter();
 		$cacheKey = 'contao_alt_editor_missing_alt_texts';
 
@@ -177,7 +177,7 @@ class AltEditor {
 		$cache->save($cacheItem);
 	}
 
-	private function handleFileUsage(&$file): void {
+	private function handleFileUsage(FilesModel &$file): void {
 		$file = $file->cloneDetached();
 
 		$file->usageLink = $this->router->generate(ShowFileReferencesController::class, ['uuid' => StringUtil::binToUuid($file->uuid)]);

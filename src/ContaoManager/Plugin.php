@@ -6,13 +6,14 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
+use InspiredMinds\ContaoFileUsage\ContaoFileUsageBundle;
 use Lukasbableck\ContaoAltEditorBundle\ContaoAltEditorBundle;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class Plugin implements BundlePluginInterface, RoutingPluginInterface {
 	public function getBundles(ParserInterface $parser): array {
-		return [BundleConfig::create(ContaoAltEditorBundle::class)->setLoadAfter([ContaoCoreBundle::class])];
+		return [BundleConfig::create(ContaoAltEditorBundle::class)->setLoadAfter([ContaoCoreBundle::class, ContaoFileUsageBundle::class])];
 	}
 
 	public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel) {

@@ -5,3 +5,5 @@ services:
         public: false
     Lukasbableck\ContaoAltEditorBundle\:
         resource: ../src
+    Lukasbableck\ContaoAltEditorBundle\Classes\AltEditor:
+        public: true

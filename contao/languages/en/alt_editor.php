@@ -11,3 +11,4 @@ $GLOBALS['TL_LANG']['alt_editor']['fileCount'] = '{count} files';
 $GLOBALS['TL_LANG']['alt_editor']['fileCountWithUsage'] = '{count} files, {used} of which in use';
 
 $GLOBALS['TL_LANG']['alt_editor']['generateAltText'] = 'Generate alt text for {filename}';
+$GLOBALS['TL_LANG']['alt_editor']['filteredForImagesWithoutAltTexts'] = 'Filtered for images without alt texts';

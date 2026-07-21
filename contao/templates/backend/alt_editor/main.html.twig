@@ -12,6 +12,7 @@
 		<form method="POST" action="{{ path('contao_backend') }}?do=files&act=editAll&fields=1&rt={{ csrfToken }}" data-turbo="false">
 			<input type="hidden" name="FORM_SUBMIT" value="tl_files_all">
 			<input type="hidden" name="REQUEST_TOKEN" value="{{ csrfToken }}">
+			<input type="hidden" name="all_fields[]" value="preview">
 			<input type="hidden" name="all_fields[]" value="name">
 			<input type="hidden" name="all_fields[]" value="meta">
 			<input type="hidden" name="all_fields[]" value="ignoreEmptyAlt">

@@ -1,7 +1,9 @@
 <?php
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use Lukasbableck\ContaoAltEditorBundle\Controller\AltEditorBackendController;
+use Lukasbableck\ContaoAltEditorBundle\DataContainer\MissingAltTextsFolderDataContainer;
+
+$GLOBALS['TL_DCA']['tl_files']['config']['dataContainer'] = MissingAltTextsFolderDataContainer::class;
 
 $GLOBALS['TL_DCA']['tl_files']['list']['operations'] = array_merge(
 	[
@@ -12,9 +14,10 @@ $GLOBALS['TL_DCA']['tl_files']['list']['operations'] = array_merge(
 	$GLOBALS['TL_DCA']['tl_files']['list']['operations']
 );
 
-$GLOBALS['TL_DCA']['tl_files']['list']['global_operations']['altEditor'] = [
+$GLOBALS['TL_DCA']['tl_files']['list']['global_operations']['missingAltTexts'] = [
 	'icon' => 'editor.svg',
-	'route' => AltEditorBackendController::class,
+	'href' => '&missingAltTexts=1',
+	'primary' => true,
 ];
 
 $GLOBALS['TL_DCA']['tl_files']['fields']['ignoreEmptyAlt'] = [
