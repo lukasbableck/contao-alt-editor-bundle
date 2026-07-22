@@ -17,7 +17,6 @@ class AltTextGlobalOperationButtonCallbackListener {
 		if (!$this->security->isGranted('ROLE_ADMIN') && !$this->security->isGranted('contao_user.alteditor')) {
 			return '';
 		}
-		dump($href, $label, $title, $class, $attributes, $table, $rootRecordIds);
 
 		$href = Backend::addToUrl($href);
 
